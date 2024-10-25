@@ -1,0 +1,23 @@
+@import "../../../assets/styles/variables";
+
+.comment-input-wrapper {
+    display: flex;
+    align-items: center;
+
+    .comment-input {
+      flex: 1;
+      resize: none;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      color: $text-dark;
+    }
+    .btn-comment {
+      font-size: 14px;
+      font-weight: 600;
+      color: $l-color;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+  }

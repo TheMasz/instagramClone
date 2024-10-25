@@ -1,0 +1,16 @@
+<div class="story-wrapper">
+  <button class="scroll-button left" (click)="scrollLeft()">
+    <mat-icon>arrow_back_ios</mat-icon>
+  </button>
+  <div class="story-container" #storyContainer>
+    <div class="story" *ngFor="let story of stories">
+      <div class="outer-wrapper">
+        <img [src]="story.image" alt="Story" />
+      </div>
+      <div class="username">{{ story.username }}</div>
+    </div>
+  </div>
+  <button class="scroll-button right" (click)="scrollRight()">
+    <mat-icon>arrow_forward_ios</mat-icon>
+  </button>
+</div>

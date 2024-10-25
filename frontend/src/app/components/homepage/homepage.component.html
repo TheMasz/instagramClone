@@ -1,0 +1,80 @@
+<app-main-layout>
+  <div class="container">
+    <div class="main-content">
+      <div class="main-feed">
+        <app-story></app-story>
+        <div class="posts" *ngFor="let post of posts">
+          <app-post [post]="post"></app-post>
+        </div>
+      </div>
+      <div class="main-suggest">
+        <div class="header">
+          <div class="row">
+            <div class="avatar">
+              <img
+                *ngIf="user?.profilePictureUrl != null"
+                [src]="'http://localhost:8080/images' + user?.profilePictureUrl"
+                alt="{{ user?.username }}"
+              />
+              <h6
+                style="text-transform: uppercase"
+                *ngIf="user?.profilePictureUrl == null"
+              >
+                {{ getFirstCharacter(user?.username || "") }}
+              </h6>
+            </div>
+            <div class="user-detail">
+              <a [href]="'/profile/' + user?.username">
+                <h5>{{ user?.username }}</h5>
+              </a>
+              <p>{{ user?.bio }}</p>
+            </div>
+          </div>
+          <a href="" class="change-account"> เปลี่ยน </a>
+        </div>
+        <div class="body">
+          <div class="row space-between title">
+            <h5>แนะนำสำหรับคุณ</h5>
+            <a href="">ดูทั้งหมด</a>
+          </div>
+          <ul class="user-suggest">
+            <li *ngFor="let userSuggest of usersSuggest" class="user">
+              <div class="row">
+                <div class="avatar">
+                  <img
+                    *ngIf="userSuggest.profilePictureUrl != null"
+                    [src]="
+                      'http://localhost:8080/images' +
+                      userSuggest.profilePictureUrl
+                    "
+                    alt="{{ userSuggest.username }}"
+                  />
+                  <h6
+                    style="text-transform: uppercase"
+                    *ngIf="userSuggest.profilePictureUrl == null"
+                  >
+                    {{ getFirstCharacter(userSuggest.username) }}
+                  </h6>
+                </div>
+                <div class="user-detail">
+                  <a [href]="'/profile/' + userSuggest.username">{{
+                    userSuggest?.username
+                  }}</a>
+                  <p>{{ userSuggest.bio || "แนะนำสำหรับคุณ" }}</p>
+                </div>
+              </div>
+              <button
+                class="btn-follow"
+                (click)="onFollowerAction(userSuggest)"
+              >
+                {{
+                  userSuggest.followedByCurrentUser ? "กำลังติดตาม" : "ติดตาม"
+                }}
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-main-layout>

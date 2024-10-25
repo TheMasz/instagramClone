@@ -1,0 +1,11 @@
+<div class="modal-backdrop" (click)="onCloseModalDelete()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="header">
+      <h6>คุณต้องการลบ{{ title }}นี้หรือไม่?</h6>
+    </div>
+    <div class="bottom">
+      <button (click)="onCloseModalDelete()">ยกเลิก</button>
+      <button class="btn-delete" (click)="submitDelete()">ลบ</button>
+    </div>
+  </div>
+</div>

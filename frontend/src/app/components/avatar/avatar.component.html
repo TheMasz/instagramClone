@@ -1,0 +1,5 @@
+<div class="avatar">
+    <img *ngIf="src" [src]="src" [alt]="altText" />
+    <span *ngIf="!src">{{ initials }}</span>
+  </div>
+  

@@ -1,0 +1,28 @@
+server:
+  port: 8080
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: "instagram-clone-app"
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://localhost:5432/instagram-clone
+    username: postgres
+    password: syspass
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 2MB
+      max-request-size: 10MB
+---
+app:
+  token:
+    secret: "n#MySecret2024GGWP"
+    issuer: BackendService
+  file:
+    upload-dir: "uploads/"
+    profile-pictures-dir: "profile_pictures/"
+    posts-dir: "posts/"

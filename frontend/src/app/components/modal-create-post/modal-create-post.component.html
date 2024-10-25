@@ -1,0 +1,190 @@
+<div class="modal-backdrop" (click)="onCloseModalCreate()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="header">
+      <button
+        *ngIf="isFiles === true"
+        class="btn-back"
+        (click)="onBackToFileSelect()"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h5>สร้างโพสต์ใหม่</h5>
+      <button
+        *ngIf="isFiles === true && nextSubmit === false"
+        class="btn-next"
+        (click)="nextPost()"
+      >
+        ถัดไป
+      </button>
+      <button
+        *ngIf="nextSubmit === true && isFiles === true"
+        class="btn-next"
+        (click)="submitPost()"
+      >
+        โพสต์
+      </button>
+    </div>
+
+    <div class="body">
+      <ng-container *ngIf="!isFiles">
+        <div
+          class="drag-drop-area"
+          [ngClass]="{ 'drag-over': isDragging }"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDropFile($event)"
+        >
+          <mat-icon class="mat-icon" [ngClass]="{ 'drag-over': isDragging }"
+            >photo_library</mat-icon
+          >
+          <p>ลากรูปภาพมาที่นี่ หรือ</p>
+          <button (click)="fileInput.click()">เลือกจากคอมพิวเตอร์</button>
+          <input
+            type="file"
+            accept="image/*"
+            #fileInput
+            style="display: none"
+            (change)="onFileSelected($event)"
+          />
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="isFiles && !nextSubmit">
+        <div class="file-preview">
+          <img
+            *ngIf="fileUrl"
+            [src]="fileUrl"
+            alt="Preview Image"
+            class="preview-image"
+          />
+          <div class="options">
+            <div class="opt-l">
+              <div class="ratio-opt opt" (click)="toggleRatioOptions()">
+                <mat-icon>open_in_full</mat-icon>
+              </div>
+              <div class="ratio-options" *ngIf="showRatioOptions">
+                <ul>
+                  <li (click)="setAspectRatio('original')">ต้นฉบับ</li>
+                  <li (click)="setAspectRatio('1:1')">1:1</li>
+                  <li (click)="setAspectRatio('4:5')">4:5</li>
+                  <li (click)="setAspectRatio('16:9')">16:9</li>
+                </ul>
+              </div>
+
+              <div class="zoom-opt opt" (click)="toggleZoomOptions()">
+                <mat-icon>zoom_in</mat-icon>
+              </div>
+              <div class="zoom-options" *ngIf="showZoomOptions">
+                <input
+                  type="range"
+                  min="0.5"
+                  max="3"
+                  step="0.1"
+                  (input)="setZoomValue($event)"
+                  [(ngModel)]="zoomValue"
+                />
+              </div>
+            </div>
+
+            <div class="opt-r">
+              <div class="previews-opt opt" (click)="toggleImagesOptions()">
+                <mat-icon>filter_none</mat-icon>
+              </div>
+              <div class="images-options" *ngIf="showImagesOption">
+                <div
+                  class="image-item"
+                  [ngClass]="{ selected: image.selected }"
+                  *ngFor="let image of images; let i = index"
+                  draggable="true"
+                  (dragstart)="onDragImageStart($event, i)"
+                  (dragover)="onDragImageOver($event)"
+                  (drop)="onDropImage($event, i)"
+                  (dragend)="onDragImageEnd($event)"
+                  (click)="onSelectImage(i)"
+                >
+                  <img [src]="image.url" alt="Image Preview" />
+                  <button class="remove-btn" (click)="removeImage(i)">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </div>
+
+                <div class="newimg-btn">
+                  <button (click)="fileInput.click()">
+                    <mat-icon>add_circle</mat-icon>
+                  </button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    #fileInput
+                    style="display: none"
+                    (change)="onFileSelected($event)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="isFiles && nextSubmit">
+        <div class="preview-post">
+          <div class="preview-image">
+            <ul class="carousel">
+              <li
+                class="img"
+                *ngFor="let image of images; let i = index"
+                [ngStyle]="{
+                  'background-image': 'url(' + image.url + ')',
+                  transform: 'translateX(' + -currentImageIndex * 100 + '%)'
+                }"
+              ></li>
+            </ul>
+            <button
+              class="prev"
+              (click)="prevImage()"
+              *ngIf="images.length > 0 && currentImageIndex > 0"
+            >
+              &#10094;
+            </button>
+            <button
+              class="next"
+              (click)="nextImage()"
+              *ngIf="images.length > 0 && currentImageIndex < images.length - 1"
+            >
+              &#10095;
+            </button>
+          </div>
+          <form class="post-forms" [formGroup]="postFormGroup">
+            <div class="row gap-1 align-center">
+              <div class="avatar">
+                <img
+                  *ngIf="user?.profilePictureUrl"
+                  [src]="
+                    'http://localhost:8080/images' + user?.profilePictureUrl
+                  "
+                  alt="{{ user?.username }}"
+                />
+                <h6
+                  style="text-transform: uppercase"
+                  *ngIf="user?.profilePictureUrl == null"
+                >
+                  {{ getFirstCharacter(user?.username || "") }}
+                </h6>
+              </div>
+              <a [href]="'/profile/' + user?.username">{{ user?.username }}</a>
+            </div>
+            <textarea
+              rows="10"
+              maxlength="2200"
+              formControlName="desc"
+              (input)="onDescChange()"
+            ></textarea>
+            <div class="row justify-end">
+              <p>{{ desc.length }}/2200</p>
+            </div>
+          </form>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

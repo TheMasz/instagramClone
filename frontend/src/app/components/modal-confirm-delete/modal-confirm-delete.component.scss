@@ -1,0 +1,47 @@
+@import "../../../assets/styles/variables";
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+  .modal-content {
+    background: white;
+    padding: 4px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    .header {
+      padding: 10px;
+      border-bottom: 1px solid $wm-border;
+      margin-bottom: 10px;
+      h6 {
+        font-size: 14px;
+      }
+    }
+    .bottom {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      button {
+        padding: 4px 8px;
+        border-radius: 8px;
+        border: 1px solid $wm-border;
+        cursor: pointer;
+        &.btn-delete{
+            color: white;
+            background-color: red;
+        }
+      }
+      
+    }
+  }
+}

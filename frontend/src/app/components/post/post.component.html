@@ -1,0 +1,114 @@
+<div class="post-container">
+  <div class="post-header">
+    <div class="post-header-l">
+      <div class="avatar">
+        <img
+          *ngIf="post.userProfile != null"
+          [src]="'http://localhost:8080/images' + post.userProfile"
+          alt="{{ post.username }}"
+        />
+        <h6 style="text-transform: uppercase" *ngIf="post.userProfile == null">
+          {{ getFirstCharacter(post.username || "") }}
+        </h6>
+      </div>
+      <a [href]="'/profile/' + post.username" class="username"
+        >{{ post.username }}
+        <span class="timestamp">• {{ formatDate(post.createdAt) }}</span></a
+      >
+    </div>
+
+    <button
+      class="btn-action btn-post-more-option"
+      (click)="togglePostOption(post.id)"
+    >
+      <mat-icon> more_horiz </mat-icon>
+      <div
+        class="post-more-option"
+        [ngClass]="{
+          'one-button': post.username !== user.username,
+          'three-buttons': post.username === user.username
+        }"
+        *ngIf="activePostId === post.id"
+      >
+        <button>รายงาน</button>
+        <button *ngIf="post.username == user?.username">แก้ไข</button>
+        <button
+          *ngIf="post.username == user?.username"
+          class="btn-delete"
+          (click)="deletePost()"
+        >
+          ลบ
+        </button>
+      </div>
+    </button>
+  </div>
+  <div class="post-images">
+    <ul class="carousel">
+      <li
+        class="image-wrapper"
+        *ngFor="let image of post.images"
+        [style.transform]="'translateX(-' + currentIndex * 100 + '%)'"
+      >
+        <img
+          [src]="'http://localhost:8080/images' + image"
+          alt="Post image"
+          class="post-image"
+        />
+      </li>
+    </ul>
+
+    <button
+      *ngIf="post.images.length > 0 && currentIndex > 0"
+      class="carousel-button left"
+      (click)="prevImage()"
+    >
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+
+    <button
+      *ngIf="post.images.length > 0 && currentIndex < post.images.length - 1"
+      class="carousel-button right"
+      (click)="nextImage()"
+    >
+      <mat-icon>arrow_forward_ios</mat-icon>
+    </button>
+
+    <div class="carousel-indicators" *ngIf="post.images.length > 1">
+      <span
+        *ngFor="let image of post.images; let i = index"
+        [class.active]="i === currentIndex"
+        (click)="setCurrentImage(i)"
+      ></span>
+    </div>
+  </div>
+
+  <div class="post-details">
+    <app-tooltips [post]="post"></app-tooltips>
+    <p class="post-like">ถูกใจ {{ post.likeCount }} คน</p>
+    <div class="post-username">
+      <a [href]="'/profile/' + post.username">{{ post.username }}</a>
+      <p class="description">{{ post.description }}</p>
+    </div>
+    <button
+      *ngIf="post.comments.length != 0"
+      (click)="openModalPost()"
+      class="btn-open-comments"
+    >
+      ดูความคิดเห็นทั้ง {{ post.comments.length }} รายการ
+    </button>
+    <app-comment-form [post]="post"></app-comment-form>
+  </div>
+</div>
+
+<app-modal-post
+  *ngIf="isModalPostOpen"
+  [post]="post"
+  (closeModalPost)="closeModalPost()"
+></app-modal-post>
+<app-modal-confirm-delete
+  *ngIf="isDeleteModal"
+  [title]="'โพสต์'"
+  [post]="post"
+  [postId]="postId"
+  (closeModalDelete)="closeModalDelete()"
+></app-modal-confirm-delete>

@@ -1,0 +1,64 @@
+WEBAPP: INSTAGRAM CLONE
+frontend: Angular.JS
+backend: API service => crud
+	 email service => for reset password, activation account
+	 Redis service => cache
+	 WebSocket service: chat
+
+TODO: 
+frontend: 
+	/signin - success
+	/signup - success
+	/activate/:token - success
+	/send-reset-password - success
+	/reset-password/:resetToken [include resend-reset-token, new password] - success
+	post size 630 suggess side 255 padding left 64 total 949
+
+TODO:
+backend: 
+	/user/signin => nonguard - success
+	/user/signup => nonguard - success
+	/user/signout - success
+	/user/send-token-reset-password => nonguard - success
+	/user/resend-token-reset-password => nonguard - success
+	/user/reset-password => nonguard - success
+	/user/activate-account => nonguard - success
+	/user/resend-activate => nonguard - success
+	/user/delete-account - success
+	/user/myprofile - success
+	/user/profile/:path - success
+	/user/update-profile - success
+	/user/update-profile-picture - success
+	/user/new-password - success
+	/user/suggest
+	
+	/post/getAll - success
+	/post/getByUser/:username - success
+	/post/get/:id - success
+	/post - success => POST
+	/post/:id - success => PUT 
+	/post/:id - success => DELETE
+	
+
+	/liked/:id - success => POST
+	/liked/:id - success => DELETE
+
+	/saved/:id/save => POST - success
+	/saved/:id/unsave => DELETE - success
+	/saved - success
+
+	/comment => POST - success
+	/comment/:id => PUT - success
+	/comment/:id => DELETE - success
+
+	/chat/send-message
+	/chat/mark-as-read/:userId
+	/chat/get-messages/:userId
+	/chat/get-conversations (optional)
+
+	make all pagination by scroll
+
+
+	TODO: 
+	web socket for chats
+	

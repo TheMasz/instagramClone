@@ -1,0 +1,21 @@
+.tooltips {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  width: 100%;
+  .tooltips-l {
+    display: flex;
+    gap: 10px;
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      mat-icon {
+        font-size: 24px;
+      }
+    }
+  }
+
+}

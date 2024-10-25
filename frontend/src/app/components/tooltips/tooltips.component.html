@@ -1,0 +1,28 @@
+<div class="tooltips">
+    <div class="tooltips-l">
+      <button class="btn-action" (click)="onLikeAction()">
+        <mat-icon *ngIf="post.isLikedByCurrentUser" style="color: red"
+          >favorite</mat-icon
+        >
+        <mat-icon *ngIf="!post.isLikedByCurrentUser"
+          >favorite_border</mat-icon
+        >
+      </button>
+      <button class="btn-action">
+        <mat-icon>chat_bubble_outline</mat-icon>
+      </button>
+      <button class="btn-action">
+        <mat-icon>share</mat-icon>
+      </button>
+    </div>
+    <div class="tooltips-r">
+      <button class="btn-action" (click)="onSaveAction()">
+        <mat-icon *ngIf="post.isSavedByCurrentUser" style="color: black"
+          >bookmark</mat-icon
+        >
+        <mat-icon *ngIf="!post.isSavedByCurrentUser"
+          >bookmark_border</mat-icon
+        >
+      </button>
+    </div>
+  </div>

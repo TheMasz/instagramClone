@@ -1,0 +1,181 @@
+<div class="modal-backdrop" (click)="onCloseModalPost()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="post">
+      <div class="post-l">
+        <div class="post-images">
+          <ul class="carousel">
+            <li
+              class="image-wrapper"
+              *ngFor="let image of post.images"
+              [style.transform]="'translateX(-' + currentIndex * 100 + '%)'"
+            >
+              <img
+                [src]="'http://localhost:8080/images' + image"
+                alt="Post image"
+                class="post-image"
+              />
+            </li>
+          </ul>
+
+          <button
+            *ngIf="post.images.length > 0 && currentIndex > 0"
+            class="carousel-button left"
+            (click)="prevImage()"
+          >
+            <mat-icon>arrow_back_ios</mat-icon>
+          </button>
+
+          <button
+            *ngIf="
+              post.images.length > 0 && currentIndex < post.images.length - 1
+            "
+            class="carousel-button right"
+            (click)="nextImage()"
+          >
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+
+          <div class="carousel-indicators" *ngIf="post.images.length > 1">
+            <span
+              *ngFor="let image of post.images; let i = index"
+              [class.active]="i === currentIndex"
+              (click)="setCurrentImage(i)"
+            ></span>
+          </div>
+        </div>
+      </div>
+      <div class="post-r">
+        <div class="header">
+          <div class="user">
+            <div class="avatar">
+              <img
+                *ngIf="post.userProfile != null"
+                [src]="'http://localhost:8080/images' + post.userProfile"
+                alt="{{ post.username }}"
+              />
+              <h6
+                style="text-transform: uppercase"
+                *ngIf="post.userProfile == null"
+              >
+                {{ getFirstCharacter(post.username || "") }}
+              </h6>
+            </div>
+            <a [href]="'/profile/' + post.username">{{ post.username }}</a>
+          </div>
+          <button
+            class="btn-action btn-post-more-option"
+            (click)="togglePostOption(post.id)"
+          >
+            <mat-icon> more_horiz </mat-icon>
+            <div
+              class="post-more-option"
+              [ngClass]="{
+                'one-button': post.username !== user?.username,
+                'three-buttons': post.username === user?.username
+              }"
+              *ngIf="activePostId === post.id"
+            >
+              <button>รายงาน</button>
+              <button *ngIf="post.username == user?.username">แก้ไข</button>
+              <button
+                *ngIf="post.username == user?.username"
+                class="btn-delete"
+                (click)="deletePost()"
+              >
+                ลบ
+              </button>
+            </div>
+          </button>
+        </div>
+        <div class="body">
+          <ul class="comments">
+            <li class="comment">
+              <div class="avatar">
+                <img
+                  *ngIf="post.userProfile != null"
+                  [src]="'http://localhost:8080/images' + post.userProfile"
+                  alt="{{ post.username }}"
+                />
+                <h6
+                  style="text-transform: uppercase"
+                  *ngIf="post.userProfile == null"
+                >
+                  {{ getFirstCharacter(post.username || "") }}
+                </h6>
+              </div>
+              <div>
+                <div class="row gap-1">
+                  <a [href]="'/profile/' + post.username">{{
+                    post.username
+                  }}</a>
+                  <p class="message">{{ post.description }}</p>
+                </div>
+              </div>
+            </li>
+            <li
+              class="comment"
+              *ngFor="let comment of post.comments; let i = index"
+            >
+              <div class="avatar">
+                <img
+                  *ngIf="comment.profilePictureUrl != null"
+                  [src]="
+                    'http://localhost:8080/images' + comment.profilePictureUrl
+                  "
+                  alt="{{ comment.username }}"
+                />
+                <h6
+                  style="text-transform: uppercase"
+                  *ngIf="comment.profilePictureUrl == null"
+                >
+                  {{ getFirstCharacter(comment.username || "") }}
+                </h6>
+              </div>
+              <div>
+                <div class="row gap-1">
+                  <a [href]="'/profile/' + comment.username">{{
+                    comment.username
+                  }}</a>
+                  <p class="message">{{ comment.message }}</p>
+                </div>
+                <div class="row gap-1">
+                  <p class="timestamp">{{ formatDate(comment.createdAt) }}</p>
+                  <button
+                    *ngIf="comment.username === user?.username"
+                    class="btn-action btn-comment-more-option"
+                    (click)="toggleCommentOption(comment.commentId)"
+                  >
+                    <mat-icon style="font-size: 12px"> more_horiz </mat-icon>
+                    <div
+                      class="comment-more-option"
+                      *ngIf="activeCommentId === comment.commentId"
+                    >
+                      <button class="btn-action" (click)="deleteComment()">
+                        ลบ
+                      </button>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="bottom">
+          <div class="post-status">
+            <app-tooltips [post]="post"></app-tooltips>
+            <p class="like">ถูกใจ {{ post.likeCount }} คน</p>
+            <p class="timestamp">{{ formatDate(post.createdAt) }}</p>
+          </div>
+          <app-comment-form [post]="post"></app-comment-form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-modal-confirm-delete
+  [title]="'คอมเมนต์'"
+  [post]="post"
+  [commentId]="commentId"
+  *ngIf="isDeleteModal"
+  (closeModalDelete)="closeModalDelete()"
+></app-modal-confirm-delete>

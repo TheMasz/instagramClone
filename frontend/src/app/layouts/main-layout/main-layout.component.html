@@ -1,0 +1,19 @@
+<div class="main">
+  <div class="l-sidebar">
+    <app-l-sidebar
+      [user]="user"
+      [isSidebarExpanded]="isSidebarExpanded"
+      [isChat]="isChat"
+      (openModalCreate)="openModalCreate()"
+    ></app-l-sidebar>
+  </div>
+  <div class="main-content">
+    <ng-content></ng-content>
+  </div>
+</div>
+
+<app-modal-create-post
+  *ngIf="isModalCreateOpen"
+  [user]="user"
+  (closeModalCreate)="closeModalCreate()"
+></app-modal-create-post>

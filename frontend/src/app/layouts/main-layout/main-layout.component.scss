@@ -1,0 +1,18 @@
+@import '../../../assets/styles/variables';
+
+.main {
+  display: flex;
+  min-height: 100vh;
+  .l-sidebar {
+    
+    position: fixed;
+    max-width: 336px;
+    width: 336px;
+    height: 100%;
+    border-right: 1px solid $wm-border;
+  }
+  .main-content {
+    margin-left: 336px;
+    flex: 1;
+  }
+}

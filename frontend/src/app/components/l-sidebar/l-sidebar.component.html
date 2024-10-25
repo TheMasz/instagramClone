@@ -1,0 +1,154 @@
+<div class="l-sidebar">
+  <ul class="nav-links" [ngClass]="isSidebarExpanded ? 'expanded' : ''">
+    <a routerLink="/">
+      <img
+        src="https://i.imgur.com/zqpwkLQ.png"
+        alt="instagram logo"
+        *ngIf="!isSidebarExpanded"
+      />
+    </a>
+    <a
+      *ngIf="isSidebarExpanded"
+      routerLink="/"
+      style="text-align: center; margin-bottom: 20px"
+    >
+      <mat-icon>favorite</mat-icon>
+    </a>
+
+    <li>
+      <a
+        [routerLink]="['/']"
+        routerLinkActive="active"
+        #rlaHome="routerLinkActive"
+      >
+        <mat-icon>{{ rlaHome.isActive ? "home" : "home_outline" }}</mat-icon>
+        <p *ngIf="!isSidebarExpanded">หน้าหลัก</p>
+      </a>
+    </li>
+
+    <li>
+      <button (click)="toggleExpanded('search')">
+        <mat-icon>search</mat-icon>
+        <p *ngIf="!isSidebarExpanded">ค้นหา</p>
+      </button>
+    </li>
+
+    <li>
+      <a
+        [routerLink]="['/explore']"
+        routerLinkActive="active"
+        #rlaExplore="routerLinkActive"
+      >
+        <mat-icon>{{
+          rlaExplore.isActive ? "explore" : "explore_off"
+        }}</mat-icon>
+        <p *ngIf="!isSidebarExpanded">สำรวจ</p>
+      </a>
+    </li>
+
+    <li>
+      <a
+        [routerLink]="['/reels']"
+        routerLinkActive="active"
+        #rlaReels="routerLinkActive"
+      >
+        <mat-icon>{{ rlaReels.isActive ? "movie" : "movie_filter" }}</mat-icon>
+        <p *ngIf="!isSidebarExpanded">Reels</p>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="['/direct/inbox']" routerLinkActive="active">
+        <mat-icon>{{ rlaReels.isActive ? "send" : "send_border" }}</mat-icon>
+        <p *ngIf="!isSidebarExpanded">ข้อความ</p>
+      </a>
+    </li>
+
+    <li>
+      <button (click)="toggleExpanded('notifications')">
+        <mat-icon>favorite_border</mat-icon>
+        <p *ngIf="!isSidebarExpanded">การแจ้งเตือน</p>
+      </button>
+    </li>
+
+    <li>
+      <button (click)="onOpenModalCreatePost()">
+        <mat-icon>add_box</mat-icon>
+        <p *ngIf="!isSidebarExpanded">สร้าง</p>
+      </button>
+    </li>
+
+    <li>
+      <a href="/profile/{{ user?.username }}" routerLinkActive="active">
+        <div class="avatar">
+          <img
+            *ngIf="user?.profilePictureUrl != null"
+            [src]="'http://localhost:8080/images' + user?.profilePictureUrl"
+            alt="{{ user?.username }}"
+          />
+          <h6
+            style="text-transform: uppercase"
+            *ngIf="user?.profilePictureUrl == null"
+          >
+            {{ getFirstCharacter(user?.username || "") }}
+          </h6>
+        </div>
+        <p *ngIf="!isSidebarExpanded">{{ user?.username }}</p>
+      </a>
+    </li>
+
+    <li class="l-bottom">
+      <button class="btn-more-options" (click)="toggleMoreoptions()">
+        <mat-icon>menu</mat-icon>
+        <p *ngIf="!isSidebarExpanded">เพิ่มเติม</p>
+        <div class="more-options" *ngIf="isMoreOptions">
+          <button (click)="signout()">ออกจากระบบ</button>
+        </div>
+      </button>
+    </li>
+  </ul>
+
+  <div class="content-wrapper" [ngClass]="isSidebarExpanded ? 'expanded' : ''">
+    <ng-container *ngIf="isSearch">
+      <div>search</div>
+    </ng-container>
+    <ng-container *ngIf="isNoti">
+      <div>noti</div>
+    </ng-container>
+    <ng-container *ngIf="isChat">
+      <div class="chats">
+        <div class="header">
+          <div class="row space-between">
+            <h3>{{ user?.username }}</h3>
+            <mat-icon> edit_square </mat-icon>
+          </div>
+          <div class="avatar">
+            <img
+              *ngIf="user?.profilePictureUrl != null"
+              [src]="'http://localhost:8080/images' + user?.profilePictureUrl"
+              alt="{{ user?.username }}"
+            />
+            <h6
+              style="text-transform: uppercase"
+              *ngIf="user?.profilePictureUrl == null"
+            >
+              {{ getFirstCharacter(user?.username || "") }}
+            </h6>
+          </div>
+        </div>
+        <div class="body">
+          <div class="row space-between">
+            <h4>ข้อความ</h4>
+            <h5>คำขอ</h5>
+          </div>
+          <ul *ngIf="chats.length > 0">
+            <li></li>
+          </ul>
+          <div *ngIf="chats.length === 0" class="column center">
+            <p>ไม่พบข้อความ</p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

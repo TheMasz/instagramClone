@@ -1,0 +1,39 @@
+<div class="activate-container" *ngIf="isResendSuccess === false">
+  <div *ngIf="isSuccess === true" class="activate-content">
+    <img src="https://i.imgur.com/zqpwkLQ.png" alt="instagram logo" />
+    <div class="message">
+      <h1>บัญชีของคุณเปิดใช้งานเรียบร้อยแล้ว!</h1>
+      <p>ยินดีต้อนรับสู่ Instagram! เริ่มแชร์ช่วงเวลาของคุณได้เลย</p>
+    </div>
+    <div class="cta">
+      <a [routerLink]="['/signin']">ไปยังหน้าลงชื่อเข้าใช้</a>
+    </div>
+  </div>
+
+  <div *ngIf="isSuccess === false" class="activate-content">
+    <img src="https://i.imgur.com/zqpwkLQ.png" alt="instagram logo" />
+    <div class="message">
+      <h1>ไม่สามารถเปิดใช้งานบัญชีของคุณได้</h1>
+      <p>{{ errorMessage }}</p>
+    </div>
+
+    <div class="cta" *ngIf="isErrorTokenExipire">
+      <button (click)="resendActivationEmail()">
+        คลิกที่นี่เพื่อส่งลิงก์การเปิดใช้งานใหม่
+      </button>
+    </div>
+
+    <div class="cta" *ngIf="isErrorAccountAlreadyActivated">
+      <a [routerLink]="['/signin']">ไปยังหน้าลงชื่อเข้าใช้</a>
+    </div>
+  </div>
+</div>
+
+<div class="activate-container" *ngIf="isResendSuccess === true">
+  <div class="activate-content">
+    <img src="https://i.imgur.com/zqpwkLQ.png" alt="instagram logo" />
+    <div class="message">
+      <h1>ส่งโทเค็นการเปิดใช้งานใหม่สำเร็จแล้ว!</h1>
+    </div>
+  </div>
+</div>

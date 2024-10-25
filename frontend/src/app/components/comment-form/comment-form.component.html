@@ -1,0 +1,21 @@
+<form
+  [formGroup]="commentFormGroup"
+  (ngSubmit)="submitComment()"
+  class="comment-input-wrapper"
+>
+  <textarea
+    class="comment-input"
+    placeholder="เพิ่่มความคิดเห็น"
+    formControlName="message"
+    (input)="onMessageChange()"
+  ></textarea>
+
+  <button
+    type="submit"
+    class="btn-comment"
+    *ngIf="message.length > 0"
+    [disabled]="commentFormGroup.invalid"
+  >
+    โพสต์
+  </button>
+</form>

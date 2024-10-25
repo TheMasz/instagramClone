@@ -1,0 +1,64 @@
+@import "variables";
+
+.auth-forms {
+  background-color: $wm-bg;
+  max-width: $con-m-w;
+  width: 350px;
+  margin-bottom: 10px;
+  .auth-forms-content {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    border: 1px solid $wm-border;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    img {
+      margin-bottom: 20px;
+    }
+    a {
+      font-size: 14px;
+      color: $l-color;
+    }
+
+
+    .break-point {
+      display: flex;
+      align-items: center;
+      margin: 30px 0;
+      width: 100%;
+
+      p {
+        margin: 0 10px;
+      }
+
+      .line {
+        height: 1px;
+        background-color: $wm-border;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.auth-new-account {
+  max-width: 350px;
+  width: 350px;
+  p {
+    font-size: 14px;
+    a {
+      font-size: inherit;
+      font-weight: 800;
+    }
+    .blue-color {
+      color: $l-color;
+    }
+  }
+  .auth-new-account-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $wm-input-bg;
+    padding: 30px;
+  }
+}

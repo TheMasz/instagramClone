@@ -1,0 +1,139 @@
+<app-main-layout>
+  <div class="container">
+    <div class="main-content">
+      <div class="user-wrapper">
+        <div class="avatar">
+          <img
+            *ngIf="userProfile?.profilePictureUrl != null"
+            [src]="'http://localhost:8080/images' + userProfile?.profilePictureUrl"
+            alt="{{ userProfile?.username }}"
+          />
+          <h6
+            style="text-transform: uppercase"
+            *ngIf="userProfile?.profilePictureUrl == null"
+          >
+            {{ getFirstCharacter(userProfile?.username || "") }}
+          </h6>
+        </div>
+        <div class="user-details">
+          <div class="row">
+            <h6>{{ userProfile?.username }}</h6>
+            <button *ngIf="curUser?.username === username">แก้ไขโปรไฟล์</button>
+          </div>
+          <div class="row">
+            <p>{{ posts.length }} โพสต์</p>
+            <p>{{ userProfile?.followerCount }} ผู้ติดตาม</p>
+            <p>{{ userProfile?.followingCount }} กำลังติดตาม</p>
+          </div>
+
+          <p>{{ userProfile?.bio }}</p>
+        </div>
+      </div>
+
+      <div class="posts-wrapper">
+        <div class="tooltips">
+          <button [ngClass]="isPost ? 'active' : ''" (click)="onPost()">
+            <mat-icon>grid_on</mat-icon>
+            <p>โพสต์</p>
+          </button>
+          <button
+            *ngIf="curUser?.username === username"
+            [ngClass]="isSaved ? 'active' : ''"
+            (click)="onSave()"
+          >
+            <mat-icon *ngIf="isSaved">bookmark</mat-icon>
+            <mat-icon *ngIf="!isSaved">bookmark_outlined</mat-icon>
+            <p>บันทึกไว้</p>
+          </button>
+        </div>
+        <ng-container *ngIf="isPost">
+          <ul class="posts" *ngIf="posts.length > 0">
+            <li
+              class="post"
+              *ngFor="let post of posts"
+              (click)="selectPost(post)"
+            >
+              <img
+                [src]="'http://localhost:8080/images' + post.images[0]"
+                alt=""
+              />
+              <div class="overlay">
+                <div class="row">
+                  <mat-icon>favorite</mat-icon>
+                  <p>{{ post.likeCount }}</p>
+                </div>
+                <div class="row">
+                  <mat-icon>chat</mat-icon>
+                  <p>{{ post.comments.length }}</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div
+            *ngIf="posts.length === 0 && curUser?.username === username"
+            class="no-post"
+          >
+            <mat-icon style="font-size: 48px; height: 48px; width: 48px"
+              >photo_camera</mat-icon
+            >
+            <h4>แชร์รูปภาพ</h4>
+            <p>เมื่อคุณแชร์รูปภาพแล้ว รูปภาพจะปรากฏในโปรไฟล์ของคุณ</p>
+            <button (click)="openModalCreate()">แชร์รูปภาพแรกของคุณ</button>
+          </div>
+          <div
+          *ngIf="posts.length === 0 && curUser?.username !== username"
+          class="no-post"
+        >
+          <mat-icon style="font-size: 48px; height: 48px; width: 48px"
+            >photo_camera</mat-icon
+          >
+          <h4>ผู้ใช้ไม่แชร์รูปภาพ</h4>
+          <p>เมื่อคุณแชร์รูปภาพแล้ว รูปภาพจะปรากฏในโปรไฟล์</p>
+        </div>
+        </ng-container>
+
+        <ng-container *ngIf="isSaved">
+          <ul class="posts" *ngIf="savePosts.length > 0">
+            <li
+              class="post"
+              *ngFor="let savePost of savePosts"
+              (click)="selectPost(savePost)"
+            >
+              <img
+                [src]="'http://localhost:8080/images' + savePost.images[0]"
+                alt=""
+              />
+              <div class="overlay">
+                <div class="row">
+                  <mat-icon>favorite</mat-icon>
+                  <p>{{ savePost.likeCount }}</p>
+                </div>
+                <div class="row">
+                  <mat-icon>chat</mat-icon>
+                  <p>{{ savePost.comments.length }}</p>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div *ngIf="savePosts.length === 0" class="no-post">
+            <mat-icon style="font-size: 48px; height: 48px; width: 48px"
+              >photo_camera</mat-icon
+            >
+            <h4>บันทึกไว้</h4>
+            <p>เมื่อคุณบันทึกไว้ รูปภาพจะปรากฏในโปรไฟล์ของคุณ</p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</app-main-layout>
+<app-modal-post
+  *ngIf="isModalPostOpen"
+  [post]="post"
+  (closeModalPost)="closeModalPost()"
+></app-modal-post>
+<app-modal-create-post
+  *ngIf="isModalCreateOpen"
+  [user]="userProfile"
+  (closeModalCreate)="closeModalCreate()"
+></app-modal-create-post>
